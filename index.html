@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clven Lyndon M. Lomugdang — Creative Designer & Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables & Theme Configuration */
+        :root {
+            --bg-color: #0d0d0d;
+            --surface-color: #141414;
+            --surface-card: #1a1a1a;
+            --text-primary: #f4f4f5;
+            --text-secondary: #9ca3af;
+            --accent-color: #ff3366;
+            --accent-glow: rgba(255, 51, 102, 0.15);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.2);
+            
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+            
+            --spacing-section: clamp(6rem, 12vw, 10rem);
+            --container-max: 1400px;
+            --container-padding: clamp(1.5rem, 5vw, 4rem);
+            
+            --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f8f9fa;
+            --surface-color: #ffffff;
+            --surface-card: #f1f3f5;
+            --text-primary: #111111;
+            --text-secondary: #6b7280;
+            --accent-color: #e60039;
+            --accent-glow: rgba(230, 0, 57, 0.1);
+            --border-color: rgba(0, 0, 0, 0.08);
+            --border-hover: rgba(0, 0, 0, 0.2);
+        }
+
+        /* Reset & Base Styles */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        ::selection {
+            background-color: var(--accent-color);
+            color: #ffffff;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Scroll Progress Indicator */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: var(--accent-color);
+            z-index: 1001;
+            transition: width 0.1s linear;
+        }
+
+        /* Custom Cursor */
+        .custom-cursor {
+            pointer-events: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s var(--transition-smooth), height 0.3s var(--transition-smooth), background-color 0.3s ease, border 0.3s ease;
+        }
+
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--text-primary);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .cursor-follower {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border-hover);
+            background-color: transparent;
+            transition: transform 0.1s ease, width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+        }
+
+        body.cursor-hover .cursor-follower {
+            width: 70px;
+            height: 70px;
+            background-color: var(--accent-glow);
+            border-color: var(--accent-color);
+            mix-blend-mode: difference;
+        }
+
+        @media (max-width: 768px) {
+            .custom-cursor { display: none; }
+        }
+
+        /* Layout Helpers */
+        .container {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: 0 var(--container-padding);
+        }
+
+        section {
+            padding: var(--spacing-section) 0;
+            position: relative;
+        }
+
+        /* Navigation Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(13, 13, 13, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.4s ease, border-color 0.4s ease;
+        }
+
+        [data-theme="light"] header {
+            background: rgba(248, 249, 250, 0.85);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: -0.03em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.4); opacity: 0.6; }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: color 0.2s ease;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            transition: width 0.3s var(--transition-smooth);
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--text-primary);
+        }
+
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent-color);
+            background-color: var(--surface-card);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            z-index: 2;
+        }
+
+        .hero-title-wrapper {
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            font-weight: 500;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .hero-name {
+            font-size: clamp(2.5rem, 6.5vw, 6rem);
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -0.04em;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-desc {
+            font-size: clamp(1.1rem, 2vw, 1.35rem);
+            color: var(--text-secondary);
+            max-width: 650px;
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2.25rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s var(--transition-smooth);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background-color: var(--text-primary);
+            color: var(--bg-color);
+            border: 1px solid var(--text-primary);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px var(--accent-glow);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-hover);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text-primary);
+            background-color: var(--surface-card);
+            transform: translateY(-2px);
+        }
+
+        /* Floating Background Element */
+        .hero-shape {
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: clamp(250px, 35vw, 450px);
+            height: clamp(250px, 35vw, 450px);
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            background: linear-gradient(135deg, var(--accent-color), #ff758c);
+            opacity: 0.15;
+            filter: blur(40px);
+            z-index: 1;
+            animation: morph-shape 10s infinite alternate ease-in-out;
+            pointer-events: none;
+        }
+
+        @keyframes morph-shape {
+            0% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; transform: translateY(-50%) rotate(0deg) scale(1); }
+            50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; transform: translateY(-45%) rotate(180deg) scale(1.05); }
+            100% { border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%; transform: translateY(-55%) rotate(360deg) scale(0.95); }
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: var(--container-padding);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            z-index: 2;
+        }
+
+        .scroll-indicator span {
+            display: inline-block;
+            animation: bounce-arrow 2s infinite ease-in-out;
+        }
+
+        @keyframes bounce-arrow {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(6px); }
+            60% { transform: translateY(3px); }
+        }
+
+        /* About Section */
+        .section-header {
+            margin-bottom: 4rem;
+        }
+
+        .section-tag {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--accent-color);
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+        }
+
+        .about-bio {
+            font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+            font-weight: 300;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .about-bio strong {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 2.5rem;
+        }
+
+        .stat-item h4 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.03em;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-item p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .about-facts-card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .about-facts-card:hover {
+            border-color: var(--border-hover);
+        }
+
+        .about-facts-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .fact-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .fact-tag {
+            background-color: var(--surface-card);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .fact-tag:hover {
+            border-color: var(--accent-color);
+            background-color: var(--accent-glow);
+        }
+
+        /* Selected Work Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .projects-grid { grid-template-columns: 1fr; gap: 2rem; }
+        }
+
+        .project-card {
+            background-color: var(--surface-color);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: border-color 0.4s ease, transform 0.4s var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-6px);
+        }
+
+        .project-image-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 65%;
+            overflow: hidden;
+            background-color: var(--surface-card);
+        }
+
+        .project-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s var(--transition-smooth);
+            filter: grayscale(20%);
+        }
+
+        .project-card:hover .project-image {
+            transform: scale(1.05);
+            filter: grayscale(0%);
+        }
+
+        .project-info {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+
+        .project-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .project-category {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-color);
+        }
+
+        .project-year {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .project-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            transition: color 0.2s ease;
+        }
+
+        .project-card:hover .project-title {
+            color: var(--accent-color);
+        }
+
+        .project-arrow {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            background-color: var(--surface-card);
+        }
+
+        .project-card:hover .project-arrow {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            color: #ffffff;
+            transform: rotate(45deg);
+        }
+
+        .project-desc {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        /* Skills Section */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .skills-container { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 600px) {
+            .skills-container { grid-template-columns: 1fr; }
+        }
+
+        .skill-card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .skill-card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-4px);
+        }
+
+        .skill-number {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .skill-card h3 {
+            font-size: 1.35rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.75rem;
+        }
+
+        .skill-card p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        /* Experience Timeline Section */
+        .timeline {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            padding-left: 2.5rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 2px;
+            height: 100%;
+            background-color: var(--border-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3.5rem;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: calc(-2.5rem - 5px);
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--bg-color);
+            border: 2px solid var(--accent-color);
+            transition: background-color 0.3s ease;
+        }
+
+        .timeline-item:hover .timeline-dot {
+            background-color: var(--accent-color);
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-role {
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .timeline-company {
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+
+        .timeline-period {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            background-color: var(--surface-card);
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+        }
+
+        .timeline-desc {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            line-height: 1.6;
+            margin-top: 0.5rem;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            text-align: center;
+            padding: clamp(6rem, 15vw, 12rem) 0;
+            background-color: var(--surface-color);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .contact-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-statement {
+            font-size: clamp(2rem, 5vw, 4.5rem);
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-substatement {
+            font-size: clamp(1.2rem, 2.5vw, 2rem);
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-bottom: 3rem;
+        }
+
+        .contact-email-link {
+            font-size: clamp(1.2rem, 2.5vw, 2rem);
+            font-weight: 600;
+            color: var(--text-primary);
+            display: inline-block;
+            position: relative;
+            margin-bottom: 4rem;
+            transition: color 0.2s ease;
+        }
+
+        .contact-email-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent-color);
+            transform: scaleX(0.7);
+            transform-origin: right;
+            transition: transform 0.4s var(--transition-smooth);
+        }
+
+        .contact-email-link:hover {
+            color: var(--accent-color);
+        }
+
+        .contact-email-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: color 0.2s ease;
+        }
+
+        .social-link:hover {
+            color: var(--accent-color);
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            background-color: var(--bg-color);
+        }
+
+        .footer-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .easter-egg-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .easter-egg-btn:hover {
+            color: var(--accent-color);
+        }
+
+        /* Reveal Animations Initial State */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s var(--transition-smooth), transform 0.8s var(--transition-smooth);
+            will-change: opacity, transform;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Reduced Motion Support */
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            .reveal, .reveal.active { opacity: 1; transform: none; transition: none; }
+            .hero-shape, .logo-dot, .scroll-indicator span { animation: none; }
+            .custom-cursor { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- Custom Cursor -->
+    <div class="custom-cursor cursor-dot" id="cursorDot"></div>
+    <div class="custom-cursor cursor-follower" id="cursorFollower"></div>
+
+    <!-- Navigation Header -->
+    <header>
+        <div class="container nav-container">
+            <a href="#hero" class="logo hover-target">
+                CL<span class="logo-dot"></span>
+            </a>
+            <nav class="nav-links">
+                <a href="#about" class="nav-link hover-target">About</a>
+                <a href="#work" class="nav-link hover-target">Work</a>
+                <a href="#skills" class="nav-link hover-target">Skills</a>
+                <a href="#experience" class="nav-link hover-target">Experience</a>
+                <a href="#contact" class="nav-link hover-target">Contact</a>
+                <button class="theme-toggle hover-target" id="themeToggle" aria-label="Toggle theme">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 1. Hero Section -->
+    <section id="hero" class="hero">
+        <div class="hero-shape"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-title-wrapper reveal">
+                    <span class="hero-subtitle">Creative Designer & Developer</span>
+                    <h1 class="hero-name">Clven Lyndon M. Lomugdang</h1>
+                </div>
+                <p class="hero-desc reveal">4th-year BSIT undergraduate at the University of Mindanao, building practical full-stack solutions, clean business applications, and intuitive user experiences.</p>
+                <div class="hero-cta-group reveal">
+                    <a href="#work" class="btn btn-primary hover-target magnetic-btn">View My Work</a>
+                    <a href="#contact" class="btn btn-secondary hover-target magnetic-btn">Let's Talk</a>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>↓</span> Scroll to explore
+        </div>
+    </section>
+
+    <!-- 2. About Section -->
+    <section id="about">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">About Me</span>
+                <h2 class="section-title">Driven by code and creativity.</h2>
+            </div>
+            <div class="about-grid">
+                <div class="reveal">
+                    <p class="about-bio">
+                        I am a <strong>4th-year BSIT undergraduate at the University of Mindanao (UM)</strong>, passionate about turning real-world challenges into clean, effective software applications. My work ranges from retail POS systems to custom productivity tools and specialized trackers.
+                        <br><br>
+                        I combine strong analytical problem-solving skills from my IT background with a modern design sensibility to ensure that everything I build is both functional and pleasant to use.
+                    </p>
+                    <div class="about-stats">
+                        <div class="stat-item">
+                            <h4>5+</h4>
+                            <p>Built Applications</p>
+                        </div>
+                        <div class="stat-item">
+                            <h4>BSIT</h4>
+                            <p>Undergraduate at UM</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-facts-card reveal">
+                    <h3>Core Focus & Toolkit</h3>
+                    <div class="fact-tags">
+                        <span class="fact-tag">Full-Stack Development</span>
+                        <span class="fact-tag">POS & Business Logic</span>
+                        <span class="fact-tag">UI/UX Design</span>
+                        <span class="fact-tag">Web Applications</span>
+                        <span class="fact-tag">Database Management</span>
+                        <span class="fact-tag">Problem Solving</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Selected Work Section -->
+    <section id="work">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">Portfolio</span>
+                <h2 class="section-title">Selected Work.</h2>
+            </div>
+            <div class="projects-grid">
+                <!-- Project 1: Two Petals -->
+                <article class="project-card reveal hover-target" onclick="window.location.href='#contact'">
+                    <div class="project-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=1000&q=80" alt="Two Petals" class="project-image" loading="lazy">
+                    </div>
+                    <div class="project-info">
+                        <div>
+                            <div class="project-meta">
+                                <span class="project-category">POS & Management</span>
+                                <span class="project-year">2026</span>
+                            </div>
+                            <div class="project-title-row">
+                                <h3 class="project-title">Two Petals</h3>
+                                <div class="project-arrow">→</div>
+                            </div>
+                            <p class="project-desc">A simple POS and management system built to streamline operations and transactions for a flower business.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 2: MiruList -->
+                <article class="project-card reveal hover-target" onclick="window.location.href='#contact'">
+                    <div class="project-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1000&q=80" alt="MiruList" class="project-image" loading="lazy">
+                    </div>
+                    <div class="project-info">
+                        <div>
+                            <div class="project-meta">
+                                <span class="project-category">Tracking Application</span>
+                                <span class="project-year">2026</span>
+                            </div>
+                            <div class="project-title-row">
+                                <h3 class="project-title">MiruList</h3>
+                                <div class="project-arrow">→</div>
+                            </div>
+                            <p class="project-desc">Your personal anime companion app to catalog currently watching series, plan future watches, and track completed titles in one place.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 3: Kingsman -->
+                <article class="project-card reveal hover-target" onclick="window.location.href='#contact'">
+                    <div class="project-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=1000&q=80" alt="Kingsman" class="project-image" loading="lazy">
+                    </div>
+                    <div class="project-info">
+                        <div>
+                            <div class="project-meta">
+                                <span class="project-category">Utility / Game App</span>
+                                <span class="project-year">2025</span>
+                            </div>
+                            <div class="project-title-row">
+                                <h3 class="project-title">Kingsman</h3>
+                                <div class="project-arrow">→</div>
+                            </div>
+                            <p class="project-desc">A simple basketball game companion app that manages player rosters, tracks payments, and logs outstanding debts.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 4: Owe No -->
+                <article class="project-card reveal hover-target" onclick="window.location.href='#contact'">
+                    <div class="project-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=1000&q=80" alt="Owe No" class="project-image" loading="lazy">
+                    </div>
+                    <div class="project-info">
+                        <div>
+                            <div class="project-meta">
+                                <span class="project-category">Finance Tracker</span>
+                                <span class="project-year">2025</span>
+                            </div>
+                            <div class="project-title-row">
+                                <h3 class="project-title">Owe No</h3>
+                                <div class="project-arrow">→</div>
+                            </div>
+                            <p class="project-desc">A personal debt-tracking application designed to monitor and manage multiple liabilities clearly and stress-free.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 5: BrewWay Co. -->
+                <article class="project-card reveal hover-target" onclick="window.location.href='#contact'">
+                    <div class="project-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=1000&q=80" alt="BrewWay Co." class="project-image" loading="lazy">
+                    </div>
+                    <div class="project-info">
+                        <div>
+                            <div class="project-meta">
+                                <span class="project-category">Business POS</span>
+                                <span class="project-year">2025</span>
+                            </div>
+                            <div class="project-title-row">
+                                <h3 class="project-title">BrewWay Co.</h3>
+                                <div class="project-arrow">→</div>
+                            </div>
+                            <p class="project-desc">A lightweight business management and POS system built specifically to streamline operations for small coffee shops.</p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Skills / Expertise Section -->
+    <section id="skills">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">Expertise</span>
+                <h2 class="section-title">Capabilities & Skills.</h2>
+            </div>
+            <div class="skills-container">
+                <div class="skill-card reveal">
+                    <span class="skill-number">01 / 06</span>
+                    <h3>UI/UX Design</h3>
+                    <p>Designing clean layouts, user flows, and wireframes tailored for clarity and ease of use.</p>
+                </div>
+                <div class="skill-card reveal">
+                    <span class="skill-number">02 / 06</span>
+                    <h3>Web Design</h3>
+                    <p>Creating responsive interfaces with a strong focus on typography, whitespace, and visual hierarchy.</p>
+                </div>
+                <div class="skill-card reveal">
+                    <span class="skill-number">03 / 06</span>
+                    <h3>Frontend Development</h3>
+                    <p>Building responsive web experiences using clean HTML, CSS, and vanilla JavaScript.</p>
+                </div>
+                <div class="skill-card reveal">
+                    <span class="skill-number">04 / 06</span>
+                    <h3>POS & Business Apps</h3>
+                    <p>Developing custom management software and Point-of-Sale systems tailored for small businesses.</p>
+                </div>
+                <div class="skill-card reveal">
+                    <span class="skill-number">05 / 06</span>
+                    <h3>Database Logic</h3>
+                    <p>Structuring records and data flows for tracking apps, debt monitors, and inventory systems.</p>
+                </div>
+                <div class="skill-card reveal">
+                    <span class="skill-number">06 / 06</span>
+                    <h3>Academic Projects</h3>
+                    <p>Leveraging 4 years of IT studies at UM to research, design, and ship functional software solutions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Experience / Timeline Section -->
+    <section id="experience">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">Career Path</span>
+                <h2 class="section-title">Professional Timeline.</h2>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-header">
+                        <h3 class="timeline-role">BSIT Undergraduate Student</h3>
+                        <span class="timeline-company">University of Mindanao</span>
+                        <span class="timeline-period">2022 — Present</span>
+                    </div>
+                    <p class="timeline-desc">Pursuing a Bachelor of Science in Information Technology, building robust standalone software applications, POS platforms, and creative web tools.</p>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-header">
+                        <h3 class="timeline-role">Independent Application Developer</h3>
+                        <span class="timeline-company">Self-Employed / Personal Projects</span>
+                        <span class="timeline-period">2024 — Present</span>
+                    </div>
+                    <p class="timeline-desc">Designed and developed custom applications including Two Petals, MiruList, Kingsman, Owe No, and BrewWay Co. focusing on practical utility and clean interfaces.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="contact-wrapper reveal">
+                <h2 class="contact-statement">Have a project in mind?</h2>
+                <p class="contact-substatement">Let's make something great.</p>
+                <a href="mailto:lomugdanglyndon1@gmail.com" class="contact-email-link hover-target">lomugdanglyndon1@gmail.com</a>
+                <div class="social-links">
+                    <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-link hover-target">GitHub</a>
+                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-link hover-target">LinkedIn</a>
+                    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-link hover-target">Twitter / X</a>
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-link hover-target">Instagram</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Footer -->
+    <footer>
+        <div class="container footer-container">
+            <div class="copyright">© 2026 Clven Lyndon M. Lomugdang. All rights reserved.</div>
+            <button class="easter-egg-btn hover-target" id="easterEggBtn">
+                <span>✨</span> Click for a surprise
+            </button>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Interactions & Animations -->
+    <script>
+        // Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('scrollProgress').style.width = scrolled + '%';
+        });
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            if (currentTheme === 'light') {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // Load saved theme preference
+        if (localStorage.getItem('theme') === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+
+        // Custom Cursor & Hover States
+        const cursorDot = document.getElementById('cursorDot');
+        const cursorFollower = document.getElementById('cursorFollower');
+        let mouseX = 0, mouseY = 0;
+        let followerX = 0, followerY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+        });
+
+        function renderCursor() {
+            followerX += (mouseX - followerX) * 0.15;
+            followerY += (mouseY - followerY) * 0.15;
+            cursorFollower.style.transform = `translate(${followerX}px, ${followerY}px)`;
+            requestAnimationFrame(renderCursor);
+        }
+        requestAnimationFrame(renderCursor);
+
+        // Hover Effect on Interactive Elements
+        const hoverTargets = document.querySelectorAll('.hover-target');
+        hoverTargets.forEach(target => {
+            target.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+            target.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+        });
+
+        // Magnetic Buttons Interaction
+        const magneticBtns = document.querySelectorAll('.magnetic-btn');
+        magneticBtns.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate(0px, 0px)';
+            });
+        });
+
+        // Intersection Observer for Reveal Animations
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Easter Egg Interaction
+        const easterEggBtn = document.getElementById('easterEggBtn');
+        const compliments = [
+            "✨ You have immaculate taste for scrolling all the way down!",
+            "🚀 Thanks for checking out Clven's portfolio! Let's build something epic.",
+            "💡 Fun fact: This entire page is built in a single vanilla HTML file.",
+            "☕ Powered by clean code, UM spirit, and extra cups of coffee."
+        ];
+        easterEggBtn.addEventListener('click', () => {
+            const randomCompliment = compliments[Math.floor(Math.random() * compliments.length)];
+            easterEggBtn.querySelector('span').textContent = randomCompliment;
+            setTimeout(() => {
+                easterEggBtn.querySelector('span').textContent = "✨ Click for a surprise";
+            }, 4000);
+        });
+
+        // Active Navigation Link on Scroll
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
