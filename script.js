@@ -1,4 +1,6 @@
+// ====================================================================
 // Scroll Progress Bar
+// ====================================================================
 window.addEventListener('scroll', () => {
     const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
     const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -7,7 +9,9 @@ window.addEventListener('scroll', () => {
     if (progressEl) progressEl.style.width = scrolled + '%';
 });
 
+// ====================================================================
 // Theme Toggle
+// ====================================================================
 const themeToggle = document.getElementById('themeToggle');
 if (themeToggle) {
     themeToggle.addEventListener('click', () => {
@@ -26,7 +30,9 @@ if (localStorage.getItem('theme') === 'light') {
     document.documentElement.setAttribute('data-theme', 'light');
 }
 
+// ====================================================================
 // Custom Cursor (Safely isolated to prevent main-thread locking)
+// ====================================================================
 const cursorDot = document.getElementById('cursorDot');
 const cursorFollower = document.getElementById('cursorFollower');
 let mouseX = 0, mouseY = 0;
@@ -63,7 +69,9 @@ document.addEventListener('mouseout', (e) => {
     }
 });
 
+// ====================================================================
 // Magnetic Buttons
+// ====================================================================
 document.querySelectorAll('.magnetic-btn').forEach(btn => {
     btn.addEventListener('mousemove', (e) => {
         const rect = btn.getBoundingClientRect();
@@ -76,7 +84,9 @@ document.querySelectorAll('.magnetic-btn').forEach(btn => {
     });
 });
 
+// ====================================================================
 // Reveal Animations
+// ====================================================================
 const revealObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -88,7 +98,9 @@ const revealObserver = new IntersectionObserver((entries, observer) => {
 
 document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
+// ====================================================================
 // Easter Egg
+// ====================================================================
 const easterEggBtn = document.getElementById('easterEggBtn');
 if (easterEggBtn) {
     const compliments = [
@@ -107,7 +119,9 @@ if (easterEggBtn) {
     });
 }
 
+// ====================================================================
 // Active Nav Link on Scroll
+// ====================================================================
 const sections = document.querySelectorAll('section');
 const navLinks = document.querySelectorAll('.nav-link');
 window.addEventListener('scroll', () => {
@@ -128,7 +142,7 @@ window.addEventListener('scroll', () => {
 });
 
 // ====================================================================
-// Clean Stacked Deck Modal Functionality
+// Buttery Smooth Sequenced Card-Shuffling Deck Modal Functionality
 // ====================================================================
 document.addEventListener("DOMContentLoaded", () => {
     let modal = document.getElementById("projectModal");
@@ -138,9 +152,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalBackdrop = modal.querySelector(".modal-backdrop");
     const projectCards = document.querySelectorAll(".project-card");
 
-    // Elements inside your modal structure
     const titleEl = modal.querySelector("#modalTitle");
-    const linkEl = modal.querySelector("#modalLiveLink"); // Let's talk / preview button
+    const linkEl = modal.querySelector("#modalLiveLink");
 
     let deckContainer = modal.querySelector("#modalDeck");
     if (!deckContainer) {
@@ -162,58 +175,47 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (!imagesString.trim()) return;
 
-            // Display ONLY the project name on top
             if (titleEl) titleEl.textContent = projectTitle;
 
-            // Display the Let's Talk / Preview button below the images
             if (linkEl) {
                 linkEl.href = liveUrl;
                 linkEl.style.display = liveUrl && liveUrl !== '#' ? 'inline-flex' : 'none';
             }
 
             cardsData = imagesString.split(",").map(img => img.trim());
-            renderDeck(false);
+            renderDeck();
 
             modal.classList.add("active");
             document.body.style.overflow = "hidden";
         });
     });
 
-    function renderDeck(animate = false) {
+    function renderDeck() {
         deckContainer.innerHTML = "";
         
         cardsData.forEach((imgSrc, index) => {
             const cardEl = document.createElement("div");
             cardEl.className = "modal-card-item";
             cardEl.style.zIndex = cardsData.length - index;
+            cardEl.innerHTML = `<img src="${imgSrc}" alt="Project preview image" loading="lazy" style="width: 100%; height: 100%; object-fit: contain; background: transparent;">`;
             
-            if (animate && index === cardsData.length - 1) {
-                cardEl.style.transform = "translateY(0) scale(1) rotate(0deg)";
-                cardEl.style.opacity = "1";
-                
-                setTimeout(() => {
-                    cardEl.style.transform = "translateX(120px) translateY(-20px) scale(0.95) rotate(15deg)";
-                    cardEl.style.opacity = "0";
-                }, 20);
-            } else {
-                updateCardTransform(cardEl, index);
-            }
-
-            cardEl.innerHTML = `<img src="${imgSrc}" alt="Project preview image" loading="lazy">`;
+            applyTransform(cardEl, index);
             deckContainer.appendChild(cardEl);
         });
     }
 
-    function updateCardTransform(cardEl, positionIndex) {
+    function applyTransform(cardEl, positionIndex) {
+        cardEl.style.transition = "transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease";
+        cardEl.style.opacity = "1";
+        
         if (positionIndex === 0) {
             cardEl.style.transform = "translateY(0) scale(1) rotate(0deg)";
-            cardEl.style.opacity = "1";
             cardEl.style.pointerEvents = "auto";
         } else {
-            const offset = positionIndex * 14;
+            const offset = positionIndex * 12;
             const scale = 1 - (positionIndex * 0.04);
-            cardEl.style.transform = `translateY(${offset}px) scale(${scale}) rotate(0deg)`;
-            cardEl.style.opacity = Math.max(0.25, 1 - (positionIndex * 0.25));
+            const rotate = positionIndex * 1.5;
+            cardEl.style.transform = `translateY(${offset}px) scale(${scale}) rotate(${rotate}deg)`;
             cardEl.style.pointerEvents = "none";
         }
     }
@@ -222,14 +224,59 @@ document.addEventListener("DOMContentLoaded", () => {
         if (cardsData.length <= 1 || isAnimating) return;
         isAnimating = true;
 
-        renderDeck(true);
+        const cardElements = deckContainer.querySelectorAll(".modal-card-item");
+        const topCard = cardElements[0]; // The current front card
 
+        if (!topCard) {
+            isAnimating = false;
+            return;
+        }
+
+        // STEP 1: Lift the active card smoothly upward and tilt it gracefully (takes 0.35s)
+        topCard.style.transition = "transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)";
+        topCard.style.zIndex = 999; 
+        topCard.style.transform = "translateY(-65px) scale(1.04) rotate(-6deg)";
+
+        // STEP 2: Midpoint transition — instantly swap data layer so the next card occupies the front,
+        // and send the old card on its smooth descent to the back layer.
         setTimeout(() => {
             const shiftedCard = cardsData.shift();
             cardsData.push(shiftedCard);
-            renderDeck(false);
+
+            deckContainer.innerHTML = "";
+            cardsData.forEach((imgSrc, index) => {
+                const cardEl = document.createElement("div");
+                cardEl.className = "modal-card-item";
+                cardEl.innerHTML = `<img src="${imgSrc}" alt="Project preview image" loading="lazy" style="width: 100%; height: 100%; object-fit: contain; background: transparent;">`;
+                deckContainer.appendChild(cardEl);
+
+                if (index === cardsData.length - 1) {
+                    // Place the old card at its lifted coordinate without transition first...
+                    cardEl.style.zIndex = 1; 
+                    cardEl.style.transition = "none";
+                    cardEl.style.transform = "translateY(-65px) scale(1.04) rotate(-6deg)";
+
+                    // ...then smoothly glide it down into the deep back-of-deck slot (takes 0.45s)
+                    setTimeout(() => {
+                        const backOffset = index * 12;
+                        const backScale = 1 - (index * 0.04);
+                        const backRotate = index * 1.5;
+
+                        cardEl.style.transition = "transform 0.45s cubic-bezier(0.25, 1, 0.5, 1)";
+                        cardEl.style.transform = `translateY(${backOffset}px) scale(${backScale}) rotate(${backRotate}deg)`;
+                    }, 30);
+                } else {
+                    // New front card and middle cards slide smoothly into their updated stack positions
+                    cardEl.style.zIndex = cardsData.length - index;
+                    applyTransform(cardEl, index);
+                }
+            });
+        }, 370);
+
+        // Reset animation lock after the full fluid sequence completes
+        setTimeout(() => {
             isAnimating = false;
-        }, 350);
+        }, 850);
     }
 
     deckContainer.addEventListener("click", (e) => {
@@ -251,7 +298,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const targetUrl = linkEl.getAttribute("href");
             if (targetUrl && targetUrl.startsWith("#")) {
                 e.preventDefault();
-                closeModal(); // Close the modal first
+                closeModal();
                 
                 const targetSection = document.querySelector(targetUrl);
                 if (targetSection) {

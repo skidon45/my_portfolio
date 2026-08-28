@@ -1,7 +1,7 @@
 :root {
-    --bg-color: #0d0d0d;
-    --surface-color: #141414;
-    --surface-card: #1a1a1a;
+    --bg-color: #0b0f19; /* A deep, rich modern dark navy/black */
+    --surface-color: #111827;
+    --surface-card: #1f2937;
     --text-primary: #f4f4f5;
     --text-secondary: #9ca3af;
     --accent-color: #ff3366;
@@ -19,9 +19,9 @@
 }
 
 [data-theme="light"] {
-    --bg-color: #f8f9fa;
+    --bg-color: #f3f4f6; /* A clean, soft modern light gray */
     --surface-color: #ffffff;
-    --surface-card: #f1f3f5;
+    --surface-card: #e5e7eb;
     --text-primary: #111111;
     --text-secondary: #6b7280;
     --accent-color: #e60039;
@@ -46,7 +46,7 @@ html {
 
 body {
     font-family: var(--font-main);
-    background-color: var(--bg-color);
+    background: var(--bg-color);
     color: var(--text-primary);
     line-height: 1.6;
     overflow-x: hidden;
@@ -1071,6 +1071,32 @@ footer {
     transform: translateY(0);
 }
 
+/* Project Card Tags Layout */
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.project-tags .tag {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.25rem 0.6rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    color: var(--text-secondary, #a0a0a0);
+    transition: all 0.3s ease;
+}
+
+/* Optional hover effect for tags */
+.project-tags .tag:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary, #fff);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
 .modal-close {
     position: absolute;
     top: 0;
@@ -1094,35 +1120,46 @@ footer {
     background: rgba(255, 255, 255, 0.2);
 }
 
-/* Stacked Deck Container */
+/* 1. Give the container a locked height so the absolute stack script works */
 .modal-deck-container {
     position: relative;
     width: 100%;
-    height: 400px; /* Adjust height based on your image layout */
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
-    cursor: pointer;
+    height: 400px !important; /* Fixed height required for absolute stack positioning */
+    margin: 1.5rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent !important;
+    overflow: hidden;
 }
 
-/* Individual Card Item inside the Stack */
+/* 2. Style the individual card container wrapper */
 .modal-card-item {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--surface-color, #1a1a1a);
+    background: transparent !important;
     border-radius: 16px;
-    border: 1px solid var(--border-hover, #333);
+    border: none !important;
     overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    box-shadow: none !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
 }
 
+/* 3. Force the image to use auto sizing and contain, bringing it back instantly */
 .modal-card-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    display: block !important;
+    background: transparent !important;
 }
 
 .modal-caption {
@@ -1136,4 +1173,31 @@ footer {
     .modal-deck-container {
         height: 280px;
     }
+}
+
+.status-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #facc15; /* Bright crisp yellow */
+    background: rgba(250, 204, 21, 0.08);
+    border: 1px solid rgba(250, 204, 21, 0.25);
+    padding: 0.15rem 0.6rem;
+    border-radius: 9999px; /* Pill shape */
+    margin-left: 0.75rem;
+    vertical-align: middle;
+}
+
+/* Adds a tiny glowing pulse indicator dot inside the tag */
+.status-tag::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background-color: #facc15;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(250, 204, 21, 0.6);
 }
