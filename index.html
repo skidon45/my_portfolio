@@ -352,14 +352,44 @@
     <section id="contact" class="contact-section">
         <div class="container">
             <div class="contact-wrapper reveal">
-                <h2 class="contact-statement">Have a project in mind?</h2>
-                <p class="contact-substatement">Let's make something great.</p>
-                <a href="mailto:lomugdanglyndon1@gmail.com" class="contact-email-link hover-target">lomugdanglyndon1@gmail.com</a>
-                <div class="social-links">
-                    <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-link hover-target">GitHub</a>
-                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-link hover-target">LinkedIn</a>
-                    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-link hover-target">Twitter / X</a>
-                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-link hover-target">Instagram</a>
+                <span class="section-tag">Get in Touch</span>
+                <h2 class="contact-statement">Let's build something together.</h2>
+                <p class="contact-substatement">Have a project in mind, an inquiry, or just want to connect? Fill out the form below or email me directly at <a href="mailto:lomugdanglyndon1@gmail.com" class="inline-email">lomugdanglyndon1@gmail.com</a>.</p>
+
+                <form class="contact-form" action="https://formsubmit.co/lomugdanglyndon1@gmail.com" method="POST">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" name="name" placeholder="John Doe" required class="form-input hover-target">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Your Email</label>
+                            <input type="email" id="email" name="email" placeholder="john@example.com" required class="form-input hover-target">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" placeholder="Project Inquiry / Collaboration" required class="form-input hover-target">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" placeholder="Tell me about your project or what's on your mind..." required class="form-input hover-target"></textarea>
+                    </div>
+
+                    <!-- Hidden config for formsubmit -->
+                    <input type="hidden" name="_captcha" value="false">
+
+                    <button type="submit" class="submit-btn hover-target">
+                        <span>Send Message</span>
+                        <span class="btn-arrow">→</span>
+                    </button>
+                </form>
+
+                <div class="social-links-footer">
+                    <a href="https://github.com/skidon45" target="_blank" rel="noopener noreferrer" class="social-link hover-target">GitHub ↗</a>
+                    <a href="https://www.linkedin.com/in/clven-lyndon-lomugdang-3161123b2/" target="_blank" rel="noopener noreferrer" class="social-link hover-target">LinkedIn ↗</a>
                 </div>
             </div>
         </div>
@@ -369,9 +399,6 @@
     <footer>
         <div class="container footer-container">
             <div class="copyright">© 2026 Clven Lyndon M. Lomugdang. All rights reserved.</div>
-            <button class="easter-egg-btn hover-target" id="easterEggBtn">
-                <span>✨</span> Click for a surprise
-            </button>
         </div>
     </footer>
 
