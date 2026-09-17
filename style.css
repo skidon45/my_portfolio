@@ -1524,21 +1524,27 @@ textarea.form-input {
 .github-repo-btn {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 6px 12px;
-    font-size: 0.8rem;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
     font-weight: 500;
-    color: var(--text-color, #fff);
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
     text-decoration: none;
-    white-space: nowrap;
+    background: var(--surface-card, #1e1e1e);
+    color: var(--text-primary, #ffffff);
+    border: 1px solid var(--border-color, #333333);
     transition: all 0.2s ease;
 }
 
+/* Light mode override */
+[data-theme="light"] .github-repo-btn {
+    background: #f1f5f9;
+    color: #0f172a;
+    border-color: #cbd5e1;
+}
+
 .github-repo-btn:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
+    background: var(--accent-color, #3b82f6);
+    color: #ffffff;
+    border-color: var(--accent-color, #3b82f6);
 }
