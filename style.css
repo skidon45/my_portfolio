@@ -1548,3 +1548,7 @@ textarea.form-input {
     color: #ffffff;
     border-color: var(--accent-color, #3b82f6);
 }
+
+.profile-pic {
+    border-radius: 50%;
+}
