@@ -142,9 +142,6 @@ section {
     position: relative;
 }
 
-/* ====================================================================
-   Navigation Header
-   ==================================================================== */
 header {
     position: fixed;
     top: 0;
@@ -1249,8 +1246,8 @@ textarea.form-input {
     justify-content: center;
     gap: 0.75rem;
     padding: 1rem 2rem;
-    background: var(--text-color, #fff);
-    color: var(--bg-color, #000);
+    background: var(--accent-color); /* Uses your brand/accent color */
+    color: #ffffff; /* Forces text to stay white for clear contrast */
     border: none;
     border-radius: 8px;
     font-weight: 600;
@@ -1283,3 +1280,265 @@ textarea.form-input {
     opacity: 1;
 }
 
+/* --- Certifications Landscape Cinematic UI --- */
+
+.certifications-section-cinematic {
+    background-color: var(--bg-color) !important;
+    padding-top: var(--section-padding);
+    padding-bottom: var(--section-padding);
+}
+
+.cert-cinematic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.cert-cinematic-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    aspect-ratio: 16 / 10;
+    background: #0b0b0b;
+    border: 1px solid var(--border-color);
+    transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+/* Hover Effect */
+.cert-cinematic-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    border-color: var(--accent-color);
+    z-index: 2;
+}
+
+.cert-image-container-cinematic {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cert-image-cinematic {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.5s ease;
+}
+
+.cert-cinematic-card:hover .cert-image-cinematic {
+    transform: scale(1.03);
+}
+
+/* Gradient Overlay at the bottom */
+.cert-gradient-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70%;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 50%, transparent 100%);
+    pointer-events: none;
+}
+
+/* Text Content Overlay */
+.cert-content-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    pointer-events: none;
+}
+
+.cert-status-pill {
+    align-self: flex-start;
+    background-color: var(--accent-color);
+    color: var(--text-on-accent);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.cert-cinematic-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: white;
+    line-height: 1.3;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+}
+
+.cert-meta-cinematic {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.85);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+}
+
+.separator {
+    opacity: 0.5;
+}
+
+/* Responsive adjustment for mobile screens */
+@media (max-width: 768px) {
+    .cert-cinematic-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Certificate Lightbox Modal Styling */
+.cert-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.cert-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.cert-modal-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cert-modal-content img {
+    max-width: 100%;
+    max-height: 80vh;
+    border-radius: 8px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    object-fit: contain;
+}
+
+#certModalCaption {
+    margin-top: 1rem;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-align: center;
+}
+
+.cert-modal-close {
+    position: absolute;
+    top: -45px;
+    right: 0;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 2rem;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.cert-modal-close:hover {
+    opacity: 1;
+}
+
+.toolkit-category {
+    margin-top: 1.2rem;
+}
+
+.toolkit-category:first-of-type {
+    margin-top: 0.8rem;
+}
+
+.category-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted, #8892b0);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 0.4rem;
+}
+
+.github-badges-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.github-badges-row img {
+    height: 25px;
+    border-radius: 4px;
+}
+
+.project-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.project-footer-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 1.5rem;
+    flex-wrap: wrap; /* Falls over nicely on super small screens if tags take up full width */
+}
+
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 0 !important; /* Clears out old margin if any */
+}
+
+.github-repo-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-color, #fff);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.github-repo-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}

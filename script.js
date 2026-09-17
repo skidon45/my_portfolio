@@ -168,7 +168,10 @@ document.addEventListener("DOMContentLoaded", () => {
     let isAnimating = false;
 
     projectCards.forEach(card => {
-        card.addEventListener("click", () => {
+        card.addEventListener("click", (e) => {
+            // If the user clicked the GitHub repository button, stop right here!
+            if (e.target.closest('.github-repo-btn')) return;
+
             const projectTitle = card.getAttribute("data-title") || "Project Preview";
             const imagesString = card.getAttribute("data-images") || "";
             const liveUrl = card.getAttribute("data-url") || "#";
@@ -314,6 +317,50 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.key === "ArrowRight" || e.key === " " || e.key === "Enter") {
             e.preventDefault();
             cycleDeck();
+        }
+    });
+});
+
+// ====================================================================
+// Dedicated Certificate Lightbox / View Image Popup
+// ====================================================================
+document.addEventListener("DOMContentLoaded", () => {
+    const certModal = document.getElementById("certModal");
+    if (!certModal) return;
+
+    const certModalImg = document.getElementById("certModalImg");
+    const certModalCaption = document.getElementById("certModalCaption");
+    const certModalClose = document.getElementById("certModalClose");
+    const certCards = document.querySelectorAll(".cert-cinematic-card");
+
+    certCards.forEach(card => {
+        card.addEventListener("click", () => {
+            const imgSrc = card.getAttribute("data-images");
+            const title = card.getAttribute("data-title");
+
+            if (!imgSrc) return;
+
+            certModalImg.src = imgSrc;
+            if (certModalCaption) certModalCaption.textContent = title || "Certificate View";
+
+            certModal.classList.add("active");
+            document.body.style.overflow = "hidden";
+        });
+    });
+
+    const closeCertModal = () => {
+        certModal.classList.remove("active");
+        document.body.style.overflow = "";
+    };
+
+    if (certModalClose) certModalClose.addEventListener("click", closeCertModal);
+    certModal.addEventListener("click", (e) => {
+        if (e.target === certModal) closeCertModal();
+    });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && certModal.classList.contains("active")) {
+            closeCertModal();
         }
     });
 });
