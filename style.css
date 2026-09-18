@@ -1283,9 +1283,9 @@ textarea.form-input {
 /* --- Certifications Landscape Cinematic UI --- */
 
 .certifications-section-cinematic {
-    background-color: var(--bg-color) !important;
-    padding-top: var(--section-padding);
-    padding-bottom: var(--section-padding);
+    background-color: var(--bg-color);
+    padding: var(--spacing-section) 0;
+    position: relative;
 }
 
 .cert-cinematic-grid {
